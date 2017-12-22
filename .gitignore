@@ -17,3 +17,4 @@ npm-debug.log
 
 
 views/oldlogin.handlebars
+views/oldhome.handlebars

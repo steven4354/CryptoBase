@@ -80,6 +80,22 @@ const morganToolkit = require("morgan-toolkit")(morgan, {
 
 app.use(morganToolkit());
 
+//-----------------------------------------
+//Mongoose Settings
+//-----------------------------------------
+const {User} = require("./models");
+const mongoose = require("mongoose");
+
+app.use((req, res, next) => {
+  if (mongoose.connection.readyState) {
+    next();
+  } else {
+    console.log("else (mongoose.connection.readyState)");
+    require("./mongo")().then(() => next());
+    console.log("else (mongoose.connection.readyState)");
+  }
+});
+
 // ----------------------------------------
 // Local Passport
 // ----------------------------------------
@@ -87,25 +103,26 @@ const passport = require("passport");
 app.use(passport.initialize());
 app.use(passport.session());
 
-// 1
-const User = require("./models/User");
-const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost/test");
-
-// 2
+// 1 & 2 removed 1 cuz setup mongoose in mongoose section`stead
 const LocalStrategy = require("passport-local").Strategy;
 
 // 3
 passport.use(
-  new LocalStrategy(function(email, password, done) {
-    User.findOne({email}, function(err, user) {
-      if (err) return done(err);
-      if (!user || !user.validPassword(password)) {
-        return done(null, false, {message: "Invalid email/password"});
-      }
-      return done(null, user);
-    });
-  })
+  new LocalStrategy(
+    {
+      usernameField: "email",
+      passwordField: "password"
+    },
+    function(email, password, done) {
+      User.findOne({email}, function(err, user) {
+        if (err) return done(err);
+        if (!user || !user.validPassword(password)) {
+          return done(null, false, {message: "Invalid email/password"});
+        }
+        return done(null, user);
+      });
+    }
+  )
 );
 
 //4
