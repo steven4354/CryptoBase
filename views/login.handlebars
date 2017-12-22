@@ -1,56 +1,56 @@
-<div class="container">
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="container top-margin">
   <div class="row">
-    <div class="col-sm-12">
-      <form method="post" action="/login">
-        <div class="form-group" method="post" action="/login">
-          <label for="email">Email address</label>
-          <input name="email" type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter email" id="email">
-          <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+    <div class="col-xs-12 col-sm-8 col-sm-offset-2">
+      <div class="well">
+        <div class="row">
+          <div class="col-xs-12">
+          </div>
         </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input name="password" type="password" class="form-control" id="password">
+        <div class="row">
+          <div class="col-xs-12">
+            <h3 class="heading text-center">Login to <a href="/">CryptoBase</a></h3>
+            <div class="row">
+              <div class="col-md-5 text-center oauth-links">
+                <a class="btn btn-primary btn-lg" href="/auth/google"><i class="fa fa-google"></i> Login with Google</a>
+                <p class="text-justify text-muted margin-top-10">Sign in / Sign up with your google account. We will never post anything on your behalf.</p>
+              </div>
+              <div class="col-md-7 user-form">
+                <form accept-charset="UTF-8" action="/login" class="form-horizontal" id="new_user" method="post">
+                  <div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="authenticity_token" type="hidden" value="3hJkV8PLPzEwtxLoC7DLp/y8N6alTouFrIjchhPBtWA="></div>
+                  <fieldset>
+
+                    <div class="form-group">
+                      <label class="col-lg-3 control-label" for="user_email">Email</label>
+                      <div class="col-lg-9">
+                        <input autofocus="autofocus" class="form-control" id="user_email" name="user[email]" type="email" value="">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-lg-3 control-label" for="user_password">Password</label>
+                      <div class="col-lg-9">
+                        <input class="form-control" id="user_password" name="user[password]" type="password">
+                      </div>
+                    </div>
+                    <div><input class="btn btn-primary btn-sm pull-right" name="commit" type="submit" value="Sign in"></div>
+                  </fieldset>
+                </form>
+                <div class="pull-left">
+
+                  <a href="/register">Sign up</a><br>
+
+                  <a href="/password/new">Forgot your password?</a><br>
+
+                  <a href="/confirmation/new">Resend Confirmation Email</a><br>
+
+
+                </div>
+              </div>
+            </div>
+
+          </div>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
-    </div>
-  </div>
-
-  <div style="margin-top: 15px" class="row">
-    <div class="col-sm-12">
-      <a href="/auth/facebook">
-        <span class="btn btn-primary">
-          Login with Facebook
-        </span>
-      </a>
-
-      <a href="/auth/linkedin">
-        <span class="btn btn-primary">
-          Login with Linkedin
-        </span>
-      </a>
-
-      <a href="/auth/twitter">
-        <span class="btn btn-primary">
-          Login with Twitter
-        </span>
-      </a>
-
-      <a href="/auth/google">
-        <span class="btn btn-primary">
-          Login with Google
-        </span>
-      </a>
-    </div>
-  </div>
-
-  <div style="margin-top: 15px" class="row">
-    <div class="col-sm-12">
-      <a href="/register">
-        <span class="btn btn-danger">
-          Register for an account
-        </span>
-      </a>
+      </div>
     </div>
   </div>
 </div>

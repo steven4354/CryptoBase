@@ -1,35 +1,35 @@
-const express = require('express');
+const express = require("express");
 const app = express();
 
 // ----------------------------------------
 // App Variables
 // ----------------------------------------
-app.locals.appName = 'Passport';
+app.locals.appName = "CryptoBase";
 
 // ----------------------------------------
 // ENV
 // ----------------------------------------
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config();
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
 }
 
 // ----------------------------------------
 // Body Parser
 // ----------------------------------------
-const bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({ extended: true }));
+const bodyParser = require("body-parser");
+app.use(bodyParser.urlencoded({extended: true}));
 
 // ----------------------------------------
 // Sessions/Cookies
 // ----------------------------------------
-const cookieParser = require('cookie-parser');
-const cookieSession = require('cookie-session');
+const cookieParser = require("cookie-parser");
+const cookieSession = require("cookie-session");
 
 app.use(cookieParser());
 app.use(
   cookieSession({
-    name: 'session',
-    keys: [process.env.SESSION_SECRET || 'secret']
+    name: "session",
+    keys: [process.env.SESSION_SECRET || "secret"]
   })
 );
 
@@ -41,14 +41,14 @@ app.use((req, res, next) => {
 // ----------------------------------------
 // Flash Messages
 // ----------------------------------------
-const flash = require('express-flash-messages');
+const flash = require("express-flash-messages");
 app.use(flash());
 
 // ----------------------------------------
 // Method Override
 // ----------------------------------------
-const methodOverride = require('method-override');
-const getPostSupport = require('express-method-override-get-post-support');
+const methodOverride = require("method-override");
+const getPostSupport = require("express-method-override-get-post-support");
 
 app.use(
   methodOverride(
@@ -61,7 +61,7 @@ app.use(
 // Referrer
 // ----------------------------------------
 app.use((req, res, next) => {
-  req.session.backUrl = req.header('Referer') || '/';
+  req.session.backUrl = req.header("Referer") || "/";
   next();
 });
 
@@ -73,9 +73,9 @@ app.use(express.static(`${__dirname}/public`));
 // ----------------------------------------
 // Logging
 // ----------------------------------------
-const morgan = require('morgan');
-const morganToolkit = require('morgan-toolkit')(morgan, {
-  req: ['cookies' /*, 'signedCookies' */]
+const morgan = require("morgan");
+const morganToolkit = require("morgan-toolkit")(morgan, {
+  req: ["cookies" /*, 'signedCookies' */]
 });
 
 app.use(morganToolkit());
@@ -83,25 +83,25 @@ app.use(morganToolkit());
 // ----------------------------------------
 // Local Passport
 // ----------------------------------------
-const passport = require('passport');
+const passport = require("passport");
 app.use(passport.initialize());
 app.use(passport.session());
 
 // 1
-const User = require('./models/User');
-const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/test');
+const User = require("./models/User");
+const mongoose = require("mongoose");
+mongoose.connect("mongodb://localhost/test");
 
 // 2
-const LocalStrategy = require('passport-local').Strategy;
+const LocalStrategy = require("passport-local").Strategy;
 
 // 3
 passport.use(
   new LocalStrategy(function(email, password, done) {
-    User.findOne({ email }, function(err, user) {
+    User.findOne({email}, function(err, user) {
       if (err) return done(err);
       if (!user || !user.validPassword(password)) {
-        return done(null, false, { message: 'Invalid email/password' });
+        return done(null, false, {message: "Invalid email/password"});
       }
       return done(null, user);
     });
@@ -122,19 +122,19 @@ passport.deserializeUser(function(id, done) {
 // ----------------------------------------
 // Facebook Passport
 // ----------------------------------------
-const FacebookStrategy = require('passport-facebook').Strategy;
+const FacebookStrategy = require("passport-facebook").Strategy;
 
 passport.use(
   new FacebookStrategy(
     {
       clientID: process.env.FACEBOOK_APP_ID,
       clientSecret: process.env.FACEBOOK_APP_SECRET,
-      callbackURL: 'http://localhost:3000/auth/facebook/callback',
-      profileFields: ['id', 'displayName', 'photos', 'emails']
+      callbackURL: "http://localhost:3000/auth/facebook/callback",
+      profileFields: ["id", "displayName", "photos", "emails"]
     },
 
     function(accessToken, refreshToken, profile, done) {
-      console.log('\x1b[34m', profile);
+      console.log("\x1b[34m", profile);
 
       const facebookId = profile.id;
       const displayName = profile.displayName;
@@ -142,12 +142,12 @@ passport.use(
       const photoURL = profile.photos[0].value;
       const email = profile.emails[0].value;
 
-      User.findOne({ email }, function(err, user) {
+      User.findOne({email}, function(err, user) {
         if (err) return done(err);
 
         if (!user) {
           // Create a new account if one doesn't exist
-          user = new User({ email, facebookId, displayName, photoURL });
+          user = new User({email, facebookId, displayName, photoURL});
           user.save((err, user) => {
             if (err) return done(err);
             done(null, user);
@@ -165,32 +165,32 @@ passport.use(
 );
 
 app.get(
-  '/auth/facebook',
-  passport.authenticate('facebook', {
-    scope: ['email', 'publish_actions', 'user_photos']
+  "/auth/facebook",
+  passport.authenticate("facebook", {
+    scope: ["email", "publish_actions", "user_photos"]
   })
 );
 
 app.get(
-  '/auth/facebook/callback',
-  passport.authenticate('facebook', {
-    successRedirect: '/',
-    failureRedirect: '/login'
+  "/auth/facebook/callback",
+  passport.authenticate("facebook", {
+    successRedirect: "/",
+    failureRedirect: "/login"
   })
 );
 
 // ----------------------------------------
 // Linkedin Strategy
 // ----------------------------------------
-var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
+var LinkedInStrategy = require("passport-linkedin-oauth2").Strategy;
 
 passport.use(
   new LinkedInStrategy(
     {
       clientID: process.env.LINKEDIN_KEY,
       clientSecret: process.env.LINKEDIN_SECRET,
-      callbackURL: 'http://localhost:3000/auth/linkedin/callback',
-      scope: ['r_emailaddress', 'r_basicprofile'],
+      callbackURL: "http://localhost:3000/auth/linkedin/callback",
+      scope: ["r_emailaddress", "r_basicprofile"],
       state: true
     },
     async function(accessToken, refreshToken, profile, done) {
@@ -201,7 +201,7 @@ passport.use(
 
         const email = profile.emails[0].value;
 
-        let user = await User.findOne({ email }, (err, obj) => {
+        let user = await User.findOne({email}, (err, obj) => {
           if (obj) {
             obj.linkedinId = linkedinId;
             obj.summary = summary;
@@ -210,7 +210,7 @@ passport.use(
         });
 
         if (!user) {
-          user = new User({ email, linkedinId, displayName, summary });
+          user = new User({email, linkedinId, displayName, summary});
           await user.save();
         }
         done(null, user);
@@ -221,13 +221,13 @@ passport.use(
   )
 );
 
-app.get('/auth/linkedin', passport.authenticate('linkedin'));
+app.get("/auth/linkedin", passport.authenticate("linkedin"));
 
 app.get(
-  '/auth/linkedin/callback',
-  passport.authenticate('linkedin', {
-    successRedirect: '/',
-    failureRedirect: '/login'
+  "/auth/linkedin/callback",
+  passport.authenticate("linkedin", {
+    successRedirect: "/",
+    failureRedirect: "/login"
   })
 );
 
@@ -235,14 +235,14 @@ app.get(
 // Twitter Strategy
 // ----------------------------------------
 
-var TwitterStrategy = require('passport-twitter').Strategy;
+var TwitterStrategy = require("passport-twitter").Strategy;
 
 passport.use(
   new TwitterStrategy(
     {
       consumerKey: process.env.TWITTER_CONSUMER_KEY,
       consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
-      callbackURL: 'http://localhost:3000/auth/twitter/callback'
+      callbackURL: "http://localhost:3000/auth/twitter/callback"
     },
     async function(accessToken, refreshToken, profile, done) {
       try {
@@ -251,7 +251,7 @@ passport.use(
         const displayName = profile.displayName;
         const followers = profile._json.followers_count;
 
-        let user = new User({ twitterId, followers, displayName });
+        let user = new User({twitterId, followers, displayName});
         await user.save();
 
         done(null, user);
@@ -262,13 +262,13 @@ passport.use(
   )
 );
 
-app.get('/auth/twitter', passport.authenticate('twitter'));
+app.get("/auth/twitter", passport.authenticate("twitter"));
 
 app.get(
-  '/auth/twitter/callback',
-  passport.authenticate('twitter', {
-    successRedirect: '/register',
-    failureRedirect: '/login'
+  "/auth/twitter/callback",
+  passport.authenticate("twitter", {
+    successRedirect: "/register",
+    failureRedirect: "/login"
   })
 );
 
@@ -276,14 +276,14 @@ app.get(
 // Google Strategy
 // ----------------------------------------
 
-var GoogleStrategy = require('passport-google-oauth20').Strategy;
+var GoogleStrategy = require("passport-google-oauth20").Strategy;
 
 passport.use(
   new GoogleStrategy(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: 'http://localhost:3000/auth/google/callback'
+      callbackURL: "http://localhost:3000/auth/google/callback"
     },
     async function(accessToken, refreshToken, profile, done) {
       try {
@@ -293,7 +293,7 @@ passport.use(
         const email = profile.emails[0].value;
         const googlePhotoUrl = profile.photos[0].value;
 
-        let user = await User.findOne({ email }, (err, obj) => {
+        let user = await User.findOne({email}, (err, obj) => {
           if (obj) {
             obj.googleId = googleId;
             obj.googlePhotoUrl = googlePhotoUrl;
@@ -302,7 +302,7 @@ passport.use(
         });
 
         if (!user) {
-          user = new User({ email, displayName, googlePhotoUrl });
+          user = new User({email, displayName, googlePhotoUrl});
           await user.save();
         }
         done(null, user);
@@ -314,49 +314,49 @@ passport.use(
 );
 
 app.get(
-  '/auth/google',
-  passport.authenticate('google', {
-    scope: ['email']
+  "/auth/google",
+  passport.authenticate("google", {
+    scope: ["email"]
   })
 );
 
 app.get(
-  '/auth/google/callback',
-  passport.authenticate('google', {
-    successRedirect: '/',
-    failureRedirect: '/login'
+  "/auth/google/callback",
+  passport.authenticate("google", {
+    successRedirect: "/",
+    failureRedirect: "/login"
   })
 );
 
 // ----------------------------------------
 // Redirect to Routers
 // ----------------------------------------
-const home = require('./routers/home');
-app.use('/', home);
+const home = require("./routers/home");
+app.use("/", home);
 
 // ----------------------------------------
 // Template Engine
 // ----------------------------------------
-const expressHandlebars = require('express-handlebars');
-const helpers = require('./helpers');
+const expressHandlebars = require("express-handlebars");
+const helpers = require("./helpers");
 
 const hbs = expressHandlebars.create({
   helpers: helpers,
-  partialsDir: 'views/',
-  defaultLayout: 'application'
+  partialsDir: "views/",
+  defaultLayout: "application"
 });
 
-app.engine('handlebars', hbs.engine);
-app.set('view engine', 'handlebars');
+app.engine("handlebars", hbs.engine);
+app.set("view engine", "handlebars");
 
 // ----------------------------------------
 // Server
 // ----------------------------------------
 const port = process.env.PORT || process.argv[2] || 3000;
-const host = 'localhost';
+const host = "localhost";
 
 let args;
-process.env.NODE_ENV === 'production' ? (args = [port]) : (args = [port, host]);
+process.env.NODE_ENV === "production" ? (args = [port]) : (args = [port, host]);
 
 args.push(() => {
   console.log(`Listening: http://${host}:${port}\n`);
@@ -377,7 +377,7 @@ app.use((err, req, res, next) => {
   if (err.stack) {
     err = err.stack;
   }
-  res.status(500).render('errors/500', { error: err });
+  res.status(500).render("errors/500", {error: err});
 });
 
 module.exports = app;
