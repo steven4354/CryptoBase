@@ -13,12 +13,17 @@
       <div class="col-sm-12">
         <div class="list-group">
           <a href="#" class="list-group-item active">
-                  Current Prices
+                  Your Coins
                 </a>
-          <a href="#" class="list-group-item">Dapibus ac facilisis in</a>
-          <a href="#" class="list-group-item">Morbi leo risus</a>
-          <a href="#" class="list-group-item">Porta ac consectetur ac</a>
-          <a href="#" class="list-group-item">Vestibulum at eros</a>
+          {{#each userCoins as |coin|}}
+            <div style="padding: 15px;" class="list-group-item">
+              {{coin.name}} <strong class="text-success">${{coin.price_usd}}</strong>
+              <form style="float:right;" action="/home/removecoin" method="post">
+                <input name="coin" value= {{coin.id}} hidden/>
+                <button type="submit" class="btn btn-danger btn-sm">-</button>
+              </form>
+            </div>
+          {{/each}}
         </div>
       </div>
     </div>
@@ -26,45 +31,35 @@
     <div class="row">
       <div class="col-sm-12">
         <div class="list-group">
-          <a href="#" class="list-group-item active">
-                  List of Avaialble Coins
-                </a>
-          <a href="#" class="list-group-item">Dapibus ac facilisis in</a>
-          <a href="#" class="list-group-item">Morbi leo risus</a>
-          <a href="#" class="list-group-item">Porta ac consectetur ac</a>
-          <a href="#" class="list-group-item">Vestibulum at eros</a>
+          <div class="list-group-item active">
+            List of Avaialble Coins (click on the + to add to your list)
+          </div>
+          {{#each coinsList as |coin|}}
+            <div style="padding: 15px;" class="list-group-item">
+              {{coin.name}} <strong class="text-success">${{coin.price_usd}}</strong>
+              <form style="float:right;" action="/home/addcoin" method="post">
+                <input name="coin" value= {{coin.symbol}} hidden/>
+                <button type="submit" class="btn btn-success btn-sm">+</button>
+              </form>
+            </div>
+          {{/each}}
         </div>
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-sm-12">
-        <div class="list-group">
-          <a href="#" class="list-group-item active">
-                  Improve Your Knowledge
-                </a>
-          <a href="#" class="list-group-item">Dapibus ac facilisis in</a>
-          <a href="#" class="list-group-item">Morbi leo risus</a>
-          <a href="#" class="list-group-item">Porta ac consectetur ac</a>
-          <a href="#" class="list-group-item">Vestibulum at eros</a>
-        </div>
-      </div>
-    </div>
   </div>
   <div class="col-sm-7">
     <div class="list-group">
       <a href="#" class="list-group-item active">
-        <h4 class="list-group-item-heading">Recent News on Your Coins</h4>
-        <p class="list-group-item-text">Make sure to keep updated.</p>
+        <h4 class="list-group-item-heading">Real-time News on Your Coins</h4>
+        <p class="list-group-item-text">Make sure to keep updated on your coins.</p>
       </a>
-      <a href="#" class="list-group-item">
-        <h4 class="list-group-item-heading">List group item heading</h4>
-        <p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-      </a>
-      <a href="#" class="list-group-item">
-        <h4 class="list-group-item-heading">List group item heading</h4>
-        <p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-      </a>
+      {{#each articles as |article|}}
+        <a href="{{article.url}}" class="list-group-item">
+          <h4 class="list-group-item-heading">{{article.title}} </h4>
+          <p class="list-group-item-text">{{article.description}}</p>
+        </a>
+      {{/each}}
     </div>
   </div>
 </div>
