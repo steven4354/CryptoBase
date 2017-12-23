@@ -2,10 +2,6 @@
 
 A Dashboard for All Your Cryptocurrencies
 
-## Description
-
-This application will
-
 ## Demo
 
 ![Alt text](./1.png?raw=true "Title")
