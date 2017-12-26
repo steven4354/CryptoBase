@@ -22,7 +22,7 @@ Technologies used:
 
 Challenges:
 - News API limited amount of articles shown when search parameters where too restrictive, (i.e. having bitcoin, ethereum, ripple... all in one search) -> resolved by pulling one API request for each coin 
-- User authentification issues (unable to sign Users in) -> resolution: created a mongo.js file and config file to make sure database was reconnnected to correctly on each request and resolved a few syntax issues on setting up the scheme
+- User authentification issues (unable to sign Users in) -> resolution: created a mongo.js file and config file to make sure database was reconnnected to correctly on application startup and resolved a few syntax issues on setting up the scheme
 
 ## Deployment
 
