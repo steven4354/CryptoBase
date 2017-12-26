@@ -1,11 +1,28 @@
 # CryptoBase Source Code
 
-A Dashboard for All Your Cryptocurrencies. Allows you to see news articles from around the web on specifically all the ones you have invested in. Also tracks the prices of cryptocurrencies and constantly updates a list of all the available cryptocurrencies available for purchase.
+A Dashboard for All Your Cryptocurrencies.
+
+Features: 
+- Allows you to see news articles from around the web on specifically all the ones you have invested in. 
+- Also tracks the prices of cryptocurrencies 
+- Constantly updates a list of all the available cryptocurrencies available for purchase.
 
 ## Demo
 
 ![Alt text](./1.png?raw=true "Title")
 ![Alt text](./2.png?raw=true "Title")
+
+### Key Technologies Used and Technical Challenges 
+
+Technologies used: 
+- Google OAuth 
+- MongoDB database and PassportJS for user authentification and keeping a list of user's coins
+- REST APIS from CryptoMarket and News APIs
+- HandlebarsJS for the view (utitlized an MVC model)
+
+Challenges:
+- News API limited amount of articles shown when search parameters where too restrictive, (i.e. having bitcoin, ethereum, ripple... all in one search) -> resolved by pulling one API request for each coin 
+- User authentification issues (unable to sign Users in) -> resolution: created a mongo.js file and config file to make sure database was reconnnected to correctly on each request and resolved a few syntax issues on setting up the scheme
 
 ### Prerequisites
 
