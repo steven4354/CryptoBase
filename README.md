@@ -32,7 +32,7 @@ What things you need to install the software and how to install them
 
 * node
 * npm
-* mongodb
+* mongodb 
 
 How to deploy this on your local machine
 
