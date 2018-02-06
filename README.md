@@ -7,10 +7,6 @@ Features:
 - Also tracks the prices of cryptocurrencies 
 - Constantly updates a list of all the available cryptocurrencies available for purchase.
 
-## Demo
-
-![Alt text](./1.png?raw=true "Title")
-![Alt text](./2.png?raw=true "Title")
 
 ### Key Technologies Used and Technical Challenges 
 
