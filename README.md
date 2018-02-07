@@ -3,7 +3,7 @@
 A Dashboard for All Your Cryptocurrencies.
 
 Features: 
-- Allows you to see news articles from around the web on specifically all the ones you have invested in. 
+- Allows you to see news articles from around the web on specifically all the coins you have invested in. 
 - Also tracks the prices of cryptocurrencies 
 - Constantly updates a list of all the available cryptocurrencies available for purchase.
 
